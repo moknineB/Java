@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC 
+          "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	>
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+<h:body>
+	<h:form acceptcharset="UTF-8">
+		<h:outputLabel for="email" value="email: " />
+		<h:inputText id="email" value="#{personneControleur.personne.email}">
+			<f:validateLength minimum="7" />
+			<f:validateRegex
+				pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+			<f:validateRequired />
+		</h:inputText>
+
+		<br></br>
+
+		<h:outputLabel for="mdp" value="mdp: " />
+		<h:inputSecret id="mdp" value="#{personneControleur.personne.mdp}" binding="#{test}">
+			<f:validateLength minimum="8" maximum="16" />
+			<f:validateRequired />
+		</h:inputSecret>
+		<br></br>
+
+		<h:outputLabel for="mdpcomfirme" value="mdpcomfirme: " />
+		<h:inputSecret id="mdpcomfirme" value="#{personneControleur.personne.mdpcomfirme}">
+			<f:validateLength minimum="8" maximum="16" />
+			<f:validateRequired />
+			<f:attribute name="motdepasse" value="#{test.value}" />
+			<f:validator validatorId="MotdePasseValidator" />
+		</h:inputSecret>
+		<br></br>
+
+		<h:outputLabel for="SiteWeb" value="SiteWeb: " />
+		<h:inputText id="SiteWeb"
+			value="#{personneControleur.personne.siteWeb}">
+		</h:inputText>
+
+
+		<h:selectBooleanCheckbox id="VuApprouve"
+			validatorMessage="Vous devez cocher la case">
+			<f:validator validatorId="booleanValidator" />
+		</h:selectBooleanCheckbox>
+		<h:outputLabel for="VuApprouve" value="case à cocher" />
+		<br/>
+
+		<h:commandButton action="#{personneControleur.enregistrer()}"
+			type="submit" />
+	</h:form>
+	<br/>
+	<br/>
+	<br/>
+	
+	
+	<style>
+table
+{
+    border-collapse: collapse; /* Les bordures du tableau seront collées (plus joli) */
+}
+td
+{
+    border: 1px solid black;
+}
+th
+{
+    border: 1px solid black;
+}
+</style>
+	<table>
+		<tr>
+			<th>Email</th>
+			<th>SiteWeb</th>
+		</tr>
+		<c:forEach var="Utilisateur"
+			items="${personneControleur.getListePersonne()}">
+			<tr>
+				<td>${Utilisateur.email}</td>
+				<td>${empty Utilisateur.siteWeb ? "non renseigné" :
+					Utilisateur.siteWeb}</td>
+			</tr>
+
+		</c:forEach>
+	</table>
+</h:body>
+</html>
